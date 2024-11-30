@@ -82,7 +82,7 @@ def clone_repository(repo_url):
         The path to the cloned repository or a message if already cloned.
     """
     repo_name = repo_url.split("/")[-1]
-    repo_path = f"/content/{repo_name}"
+    repo_path = f"content/{repo_name}"
 
     if os.path.exists(repo_path):
         st.write(f"Repository already exists at {repo_path}")
