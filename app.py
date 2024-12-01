@@ -238,13 +238,14 @@ with st.sidebar:
       with st.sidebar:
         st.write(f"You selected: {text_input}")
         st.divider()
+      # Select active chat or start a new one
+      st.subheader("Chat Threads")
+      chat_threads = list(st.session_state.chats.keys())
+        
       for thread in chat_threads:
           if st.button(thread):
               st.session_state.active_chat = thread
               
-      # Select active chat or start a new one
-      st.subheader("Chat Threads")
-      chat_threads = list(st.session_state.chats.keys())
 
       if st.button("Add Chat", icon="➕"):
           new_chat_id = f"Chat {len(st.session_state.chats) + 1}"
