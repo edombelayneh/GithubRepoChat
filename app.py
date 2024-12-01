@@ -280,10 +280,10 @@ if active_chat:
           text_input = pasted
         else:
           text_input = option
-        if is_repo_processed(text_input, pinecone_index):
+        if not is_repo_processed(text_input, pinecone_index):
           # st.write("Repository already processed in Pinecone!")
-            st.success("Ask me anything!")
-        else:
+        #     st.success("Ask me anything!")
+        # else:
             with st.spinner("Processing repository..."):
                 path = clone_repository(text_input)
                 if path:
@@ -295,24 +295,24 @@ if active_chat:
                     file_content = get_main_files_content(path)
                     pinecone_setup(text_input, file_content)
 
-            if prompt:= st.chat_input("What would you like to know?"):
-                st.session_state.messages.append({"role": "user", "content": prompt})
-                with st.chat_message("user"):
-                    st.markdown(prompt)
+        if prompt:= st.chat_input("What would you like to know?"):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
     
-                with st.chat_message("assistant"):
-                    system_prompt, augmented_query = perform_rag(prompt, text_input)
+            with st.chat_message("assistant"):
+                system_prompt, augmented_query = perform_rag(prompt, text_input)
     
-                    llm_response = client.chat.completions.create(
-                      model="llama-3.1-8b-instant",
-                      messages=[
-                          {"role": "assistant", "content": system_prompt},
-                          {"role": "user", "content": augmented_query}
+                llm_response = client.chat.completions.create(
+                    model="llama-3.1-8b-instant",
+                    messages=[
+                        {"role": "assistant", "content": system_prompt},
+                        {"role": "user", "content": augmented_query}
                       ],
-                      stream=True,
+                    stream=True,
                   )
-                    response = st.write_stream(llm_response)
-                st.session_state.messages.append({"role": "assistant", "content": response})
+                response = st.write_stream(llm_response)
+             st.session_state.messages.append({"role": "assistant", "content": response})
     
                 # Save chat to Pinecone
                 # save_chat_to_pinecone(active_chat, st.session_state.chats[active_chat])
