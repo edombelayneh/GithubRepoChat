@@ -87,7 +87,8 @@ def clone_repository(repo_url):
     repo_path = f"{repo_name}"
 
     if os.path.exists(repo_path):
-        st.write(f"Repository already exists at {repo_path}")
+        st.write(f"Repository already exists at {repo_path} but recloned")
+        Repo.clone_from(repo_url, repo_path)
         return repo_path
 
     try:
