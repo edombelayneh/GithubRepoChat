@@ -13,6 +13,8 @@ from git import Repo
 from openai import OpenAI
 from pathlib import Path
 from langchain.schema import Document
+import tempfile
+import shutil
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -72,29 +74,57 @@ def is_repo_processed(repo_url, pinecone_index):
     return False
 
 
+# def clone_repository(repo_url):
+#     """Clones a GitHub repository if it hasn't been cloned already.
+
+#     Args:
+#         repo_url: The URL of the GitHub repository.
+
+#     Returns:
+#         The path to the cloned repository or a message if already cloned.
+#     """
+#     repo_name = repo_url.split("/")[-1]
+#     repo_path = f"{repo_name}"
+
+#     if os.path.exists(repo_path):
+#         st.write(f"Repository already exists at {repo_path}")
+#         return repo_path
+
+#     try:
+#         Repo.clone_from(repo_url, repo_path)
+#         st.write(f"Repository cloned at {repo_path}")
+#         return repo_path
+#     except Exception as e:
+#         st.write(f"Error cloning repository: {str(e)}")
+#         return None
+
 def clone_repository(repo_url):
-    """Clones a GitHub repository if it hasn't been cloned already.
+    """Clones a GitHub repository to a temporary directory.
 
     Args:
         repo_url: The URL of the GitHub repository.
 
     Returns:
-        The path to the cloned repository or a message if already cloned.
+        The path to the cloned repository or None if an error occurs.
     """
-    repo_name = repo_url.split("/")[-1]
-    repo_path = f"{repo_name}"
-
-    if os.path.exists(repo_path):
-        st.write(f"Repository already exists at {repo_path}")
-        return repo_path
-
     try:
+        # Create a temporary directory
+        temp_dir = tempfile.mkdtemp()
+        repo_name = repo_url.split("/")[-1]
+        repo_path = os.path.join(temp_dir, repo_name)
+
+        # Clone the repository
         Repo.clone_from(repo_url, repo_path)
-        st.write(f"Repository cloned at {repo_path}")
+        st.write(f"Repository cloned to temporary directory: {repo_path}")
         return repo_path
     except Exception as e:
         st.write(f"Error cloning repository: {str(e)}")
         return None
+    finally:
+        # Ensure the directory is cleaned up after usage
+        if os.path.exists(repo_path):
+            shutil.rmtree(temp_dir)
+            st.write("Temporary directory cleaned up.")
 
 
 def get_file_content(file_path, repo_path):
