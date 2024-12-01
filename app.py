@@ -254,7 +254,7 @@ with st.sidebar:
 
 # Main chat interface
 st.title("Ask Your Code")
-st.divider()
+# st.divider()
 
 active_chat = st.session_state.active_chat
 
