@@ -50,6 +50,8 @@ The project includes embedding repositories into Pinecone, cloning GitHub reposi
 
 ### Screenshots
 <img width="1440" alt="Screenshot 2024-11-30 at 7 49 19 PM" src="https://github.com/user-attachments/assets/2e6bd372-2617-4437-bf75-6c2045c32cfe">
+![repochat](https://github.com/user-attachments/assets/a911c511-ade5-4e3b-8165-ecf77ec5c56d)
+
 
 
 ## To Execute
