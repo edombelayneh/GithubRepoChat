@@ -312,7 +312,7 @@ if active_chat:
                     stream=True,
                   )
                 response = st.write_stream(llm_response)
-             st.session_state.messages.append({"role": "assistant", "content": response})
+            st.session_state.messages.append({"role": "assistant", "content": response})
     
                 # Save chat to Pinecone
                 # save_chat_to_pinecone(active_chat, st.session_state.chats[active_chat])
