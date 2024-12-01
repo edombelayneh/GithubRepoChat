@@ -284,13 +284,13 @@ if "chats" not in st.session_state:
     st.session_state.chats = {"New Chat": []}
     st.session_state.active_chat = "New Chat"
 
-    # Load existing chats from Pinecone
-    for namespace in existing_namespaces(pinecone_index):
-        chat_history = load_chats_from_pinecone(namespace)
-        if chat_history:
-            st.session_state.chats[namespace] = chat_history
-        else:
-            st.warning(f"No chat history found for namespace: {namespace}")
+    # # Load existing chats from Pinecone
+    # for namespace in existing_namespaces(pinecone_index):
+    #     chat_history = load_chats_from_pinecone(namespace)
+    #     if chat_history:
+    #         st.session_state.chats[namespace] = chat_history
+    #     else:
+    #         st.warning(f"No chat history found for namespace: {namespace}")
 
 # Store the initial value of widgets in session state
 if "visibility" not in st.session_state:
@@ -398,7 +398,7 @@ if active_chat:
             st.session_state.messages.append({"role": "assistant", "content": response})
 
             # Save chat to Pinecone
-            save_chat_to_pinecone(active_chat, st.session_state.chats[active_chat])
+            # save_chat_to_pinecone(active_chat, st.session_state.chats[active_chat])
 
     else:
       st.warning("Please select a namespace or paste a GitHub link.")
