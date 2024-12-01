@@ -276,22 +276,14 @@ if active_chat:
 
 
     if pasted or option:
-        # st.warning("Please choose an indexed repo or paste in a url")
         if pasted:
           text_input = pasted
         else:
           text_input = option
         if not is_repo_processed(text_input, pinecone_index):
-          # st.write("Repository already processed in Pinecone!")
-        #     st.success("Ask me anything!")
-        # else:
             with st.spinner("Processing repository..."):
                 path = clone_repository(text_input)
                 if path:
-                    # Continue with processing the cloned repository
-                    # st.write("Processing repository...")
-                    # st.write(f"Here is the text_input: {text_input}\nHere is the path: {path}")
-    
                     # Embedding logic and Pinecone setup
                     file_content = get_main_files_content(path)
                     pinecone_setup(text_input, file_content)
