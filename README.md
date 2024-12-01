@@ -60,5 +60,3 @@ The project includes embedding repositories into Pinecone, cloning GitHub reposi
 - **Authentication:** Add support for private GitHub repositories using user credentials.
 - **Enhanced Search:** Leverage advanced language models for better query understanding and responses.
 - **Visualization:** Include visualizations of repository structure and file relationships.
-
-Feel free to explore and build upon this solo project! 🚀
