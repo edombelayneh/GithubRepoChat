@@ -274,9 +274,8 @@ if active_chat:
                 st.markdown(message["content"])
 
 
-    if not pasted or not option:
-        st.warning("Please choose an indexed repo or paste in a url")
-    else:
+    if pasted or option:
+        # st.warning("Please choose an indexed repo or paste in a url")
         if pasted:
           text_input = pasted
         else:
@@ -295,29 +294,29 @@ if active_chat:
                     file_content = get_main_files_content(path)
                     pinecone_setup(text_input, file_content)
 
-        if prompt:= st.chat_input("What would you like to know?"):
-            st.session_state.messages.append({"role": "user", "content": prompt})
-            with st.chat_message("user"):
-                st.markdown(prompt)
-
-            with st.chat_message("assistant"):
-                system_prompt, augmented_query = perform_rag(prompt, text_input)
-
-                llm_response = client.chat.completions.create(
-                  model="llama-3.1-8b-instant",
-                  messages=[
-                      {"role": "assistant", "content": system_prompt},
-                      {"role": "user", "content": augmented_query}
-                  ],
-                  stream=True,
-              )
-                response = st.write_stream(llm_response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-
-            # Save chat to Pinecone
-            # save_chat_to_pinecone(active_chat, st.session_state.chats[active_chat])
-        else:
-          st.warning("Ask me anything!")
+            if prompt:= st.chat_input("What would you like to know?"):
+                st.session_state.messages.append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+    
+                with st.chat_message("assistant"):
+                    system_prompt, augmented_query = perform_rag(prompt, text_input)
+    
+                    llm_response = client.chat.completions.create(
+                      model="llama-3.1-8b-instant",
+                      messages=[
+                          {"role": "assistant", "content": system_prompt},
+                          {"role": "user", "content": augmented_query}
+                      ],
+                      stream=True,
+                  )
+                    response = st.write_stream(llm_response)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+    
+                # Save chat to Pinecone
+                # save_chat_to_pinecone(active_chat, st.session_state.chats[active_chat])
+    else:
+        st.warning("Please choose an indexed repo or paste in a url")
 else:
     st.warning("No active chat selected. Please select a chat or start a new one.")
 
