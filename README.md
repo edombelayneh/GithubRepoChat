@@ -7,6 +7,8 @@ This project implements a codebase search and analysis tool leveraging Pinecone 
 
 The project includes embedding repositories into Pinecone, cloning GitHub repositories, and querying via a conversational interface using HuggingFace embeddings and OpenAI models.
 
+**To view the app, <a href="https://edom-repochat.streamlit.app/"> Click-here</a>.** 
+
 ### Skills Learned
 
 - Proficiency in Python and its libraries for building end-to-end applications.
