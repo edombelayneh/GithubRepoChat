@@ -87,7 +87,7 @@ def clone_repository(repo_url):
     repo_path = f"{repo_name}"
 
     if os.path.exists(repo_path):
-        st.write(f"Repository already exists at {repo_path}")
+        # st.write(f"Repository already exists at {repo_path}")
         return repo_path
 
     try:
@@ -97,35 +97,6 @@ def clone_repository(repo_url):
     except Exception as e:
         st.write(f"Error cloning repository: {str(e)}")
         return None
-
-# def clone_repository(repo_url):
-#     """Clones a GitHub repository to a temporary directory.
-
-#     Args:
-#         repo_url: The URL of the GitHub repository.
-
-#     Returns:
-#         The path to the cloned repository or None if an error occurs.
-#     """
-#     try:
-#         # Create a temporary directory
-#         temp_dir = tempfile.mkdtemp()
-#         repo_name = repo_url.split("/")[-1]
-#         repo_path = os.path.join(temp_dir, repo_name)
-
-#         # Clone the repository
-#         Repo.clone_from(repo_url, repo_path)
-#         st.write(f"Repository cloned to temporary directory: {repo_path}")
-#         return repo_path
-#     except Exception as e:
-#         st.write(f"Error cloning repository: {str(e)}")
-#         return None
-#     finally:
-#         # Ensure the directory is cleaned up after usage
-#         if os.path.exists(repo_path):
-#             shutil.rmtree(temp_dir)
-#             st.write("Temporary directory cleaned up.")
-
 
 def get_file_content(file_path, repo_path):
     """
@@ -224,58 +195,6 @@ def existing_namespaces(pinecone_index):
         print(f"Error retrieving namespaces: {str(e)}")
         return []
 
-
-# def save_chat_to_pinecone(chat_id, chat_history):
-#     """
-#     Save chat history to Pinecone.
-
-#     Args:
-#         chat_id (str): Unique identifier for the chat (e.g., chat name).
-#         chat_history (list): List of messages with roles and content.
-#     """
-#     vectorstore = PineconeVectorStore(index_name="msg-history", embedding=HuggingFaceEmbeddings())
-#     documents = [
-#         Document(page_content=msg["content"], metadata={
-#             "role": msg["role"],
-#             "chat_id": chat_id,
-#             "text": msg["content"]
-#         })
-#         for msg in chat_history
-#     ]
-#     vectorstore = PineconeVectorStore.from_documents(
-#         documents=documents,
-#         embedding=HuggingFaceEmbeddings(),
-#         index_name="msg-history",
-#         namespace=chat_id
-#     )
-
-
-# def load_chats_from_pinecone(chat_id):
-#     """
-#     Load chat history from Pinecone for the specified chat namespace.
-
-#     Args:
-#         chat_id (str): The namespace or unique identifier for the chat.
-
-#     Returns:
-#         List of chat messages or an empty list if no chat is found.
-#     """
-#     try:
-#         # Fetch all vectors in the namespace (chat_id)
-#         response = pinecone_index.fetch(ids=[], namespace=chat_id)
-#         return [
-#             {"role": metadata["role"], "content": vector["page_content"]}
-#             for vector_id, vector in response.get("vectors", {}).items()
-#             for metadata in vector.get("metadata", [])
-#         ]
-#     except Exception as e:
-#         st.error(f"Error loading chat from Pinecone: {str(e)}")
-#         return []
-
-
-
-
-
 # --- CHAT FUNCTIONALITY STARTS HERE ---
 
 # Initialize session state for chats
@@ -284,13 +203,6 @@ if "chats" not in st.session_state:
     st.session_state.chats = {"New Chat": []}
     st.session_state.active_chat = "New Chat"
 
-    # # Load existing chats from Pinecone
-    # for namespace in existing_namespaces(pinecone_index):
-    #     chat_history = load_chats_from_pinecone(namespace)
-    #     if chat_history:
-    #         st.session_state.chats[namespace] = chat_history
-    #     else:
-    #         st.warning(f"No chat history found for namespace: {namespace}")
 
 # Store the initial value of widgets in session state
 if "visibility" not in st.session_state:
@@ -312,17 +224,14 @@ with st.sidebar:
 
     # Create a selectbox with namespaces as options
     option = st.selectbox(
-        "Select a namespace:",
-        options=all_namespaces if all_namespaces else ["No namespaces available"],  # Fallback if no namespaces
+        "Select an indexed repo:",
+        options=all_namespaces if all_namespaces else ["Not available at this time"],  # Fallback if no namespaces
         index=None,  # Set default index only if namespaces exist
         placeholder="Select a namespace...",
     )
 
     st.divider()
 
-    # Select active chat or start a new one
-    st.subheader("Chat Threads")
-    chat_threads = list(st.session_state.chats.keys())
 
     if option or pasted:
       text_input = pasted if pasted else option
@@ -332,6 +241,10 @@ with st.sidebar:
       for thread in chat_threads:
           if st.button(thread):
               st.session_state.active_chat = thread
+              
+      # Select active chat or start a new one
+      st.subheader("Chat Threads")
+      chat_threads = list(st.session_state.chats.keys())
 
       if st.button("Add Chat", icon="➕"):
           new_chat_id = f"Chat {len(st.session_state.chats) + 1}"
@@ -360,7 +273,9 @@ if active_chat:
                 st.markdown(message["content"])
 
 
-    if pasted or option:
+    if not pasted or not option:
+        st.warning("Please choose an indexed repo or paste in a url")
+    else:
         if pasted:
           text_input = pasted
         else:
@@ -368,15 +283,16 @@ if active_chat:
         if is_repo_processed(text_input, pinecone_index):
           st.write("Repository already processed in Pinecone!")
         else:
-            path = clone_repository(text_input)
-            if path:
-                # Continue with processing the cloned repository
-                st.write("Processing repository...")
-                st.write(f"Here is the text_input: {text_input}\nHere is the path: {path}")
-
-                # Embedding logic and Pinecone setup
-                file_content = get_main_files_content(path)
-                pinecone_setup(text_input, file_content)
+            with st.spinner("Processing repository..."):
+                path = clone_repository(text_input)
+                if path:
+                    # Continue with processing the cloned repository
+                    # st.write("Processing repository...")
+                    # st.write(f"Here is the text_input: {text_input}\nHere is the path: {path}")
+    
+                    # Embedding logic and Pinecone setup
+                    file_content = get_main_files_content(path)
+                    pinecone_setup(text_input, file_content)
 
         if prompt:= st.chat_input("What would you like to know?"):
             st.session_state.messages.append({"role": "user", "content": prompt})
