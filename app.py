@@ -367,8 +367,8 @@ if active_chat:
         else:
           text_input = option
         if not is_repo_processed(text_input, pinecone_index):
-          st.write("Repository already processed in Pinecone!")
-        else:
+        #   st.write("Repository already processed in Pinecone!")
+        # else:
             path = clone_repository(text_input)
             if path:
                 # Continue with processing the cloned repository
