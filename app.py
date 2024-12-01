@@ -31,11 +31,11 @@ client = OpenAI(
 
 # Initialize Pinecone
 pc = Pinecone(api_key=api_key)
-pinecone_index = pc.Index("codebase-rag")
+pinecone_index = pc.Index("repochat-rag")
 
 
 def pinecone_setup(text_input, file_content):
-    vectorstore = PineconeVectorStore(index_name="codebase-rag", embedding=HuggingFaceEmbeddings())
+    vectorstore = PineconeVectorStore(index_name="repochat-rag", embedding=HuggingFaceEmbeddings())
 
     # Insert the codebase embeddings into Pinecone
     documents = []
@@ -49,7 +49,7 @@ def pinecone_setup(text_input, file_content):
     vectorstore = PineconeVectorStore.from_documents(
         documents=documents,
         embedding=HuggingFaceEmbeddings(),
-        index_name="codebase-rag",
+        index_name="repochat-rag",
         namespace=text_input
     )
 
