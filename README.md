@@ -49,6 +49,7 @@ The project includes embedding repositories into Pinecone, cloning GitHub reposi
 5. **Chat Threads:** Manage multiple chat sessions for querying different repositories.
 
 ### Screenshots
+<img width="1440" alt="Screenshot 2024-11-30 at 7 49 19 PM" src="https://github.com/user-attachments/assets/2e6bd372-2617-4437-bf75-6c2045c32cfe">
 
 
 ## To Execute
