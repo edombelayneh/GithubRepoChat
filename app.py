@@ -248,7 +248,7 @@ with st.sidebar:
               
 
       if st.button("Add Chat", icon="➕"):
-          new_chat_id = f"Chat {len(st.session_state.chats) + 2}"
+          new_chat_id = f"Chat {len(st.session_state.chats) + 1}"
           st.session_state.chats[new_chat_id] = []
           st.session_state.active_chat = new_chat_id
 
@@ -261,6 +261,7 @@ active_chat = st.session_state.active_chat
 if active_chat:
     st.subheader(f"{active_chat}")
     messages = st.session_state.chats[active_chat]
+    st.divider()
 
     intro = "Welcome! How can I assist you today?"
 
