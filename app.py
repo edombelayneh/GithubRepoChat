@@ -315,9 +315,8 @@ if active_chat:
 
             # Save chat to Pinecone
             # save_chat_to_pinecone(active_chat, st.session_state.chats[active_chat])
-
-    else:
-      st.warning("Please select a namespace or paste a GitHub link.")
+        else:
+          st.warning("Ask me anything!")
 else:
     st.warning("No active chat selected. Please select a chat or start a new one.")
 
