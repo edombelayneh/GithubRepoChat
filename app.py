@@ -200,8 +200,8 @@ def existing_namespaces(pinecone_index):
 # Initialize session state for chats
 if "chats" not in st.session_state:
     # Initialize chats
-    st.session_state.chats = {"New Chat": []}
-    st.session_state.active_chat = "New Chat"
+    st.session_state.chats = {"Chat 1": []}
+    st.session_state.active_chat = "Chat 1"
 
 
 # Store the initial value of widgets in session state
@@ -248,7 +248,7 @@ with st.sidebar:
               
 
       if st.button("Add Chat", icon="➕"):
-          new_chat_id = f"Chat {len(st.session_state.chats) + 1}"
+          new_chat_id = f"Chat {len(st.session_state.chats) + 2}"
           st.session_state.chats[new_chat_id] = []
           st.session_state.active_chat = new_chat_id
 
@@ -259,7 +259,7 @@ st.divider()
 active_chat = st.session_state.active_chat
 
 if active_chat:
-    st.subheader(f"Active Chat: {active_chat}")
+    st.subheader(f"{active_chat}")
     messages = st.session_state.chats[active_chat]
 
     intro = "Welcome! How can I assist you today?"
