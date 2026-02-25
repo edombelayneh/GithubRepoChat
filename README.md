@@ -1,68 +1,242 @@
-# GitHub Repository Analysis with Pinecone and LangChain - RepoChat
+# GitHub Repository Analysis with Pinecone and LangChain – RepoChat
 <img src="https://img.shields.io/badge/-Solo Project-f2336f?&style=for-the-badge&logoColor=white" />
 
 ## Objective
 
-This project implements a codebase search and analysis tool leveraging Pinecone for vector storage and LangChain for building conversational AI capabilities. It allows users to query GitHub repositories for insights into the codebase and provides intelligent answers by analyzing code files and metadata.
+RepoChat is an AI-powered repository intelligence tool designed to help Product Managers and Engineers quickly understand unfamiliar codebases.
 
-The project includes embedding repositories into Pinecone, cloning GitHub repositories, and querying via a conversational interface using HuggingFace embeddings and OpenAI models.
+Instead of manually navigating dozens of files, users can:
+
+* Ask structured questions about a repository
+* View evidence-backed responses
+* Explore architectural and product insights
+* Identify risks, flows, and system boundaries
+
+RepoChat leverages vector search (Pinecone), semantic embeddings (HuggingFace), and LLM-based reasoning (Groq/OpenAI-compatible models) to transform raw source code into structured, contextual answers.
+
+This project blends **technical implementation** with **product thinking**, enabling faster onboarding, due diligence, and feature discovery.
 
 **To view the app, <a href="https://edom-repochat.streamlit.app/"> Click-here</a>.** 
 
-### Skills Learned
+# Product Vision
 
-- Proficiency in Python and its libraries for building end-to-end applications.
-- Integration of **Streamlit** for building interactive web applications.
-- Leveraging **Pinecone** for vector storage and efficient similarity searches.
-- Familiarity with **LangChain** for conversational AI and document processing.
-- Use of **HuggingFace** models for generating embeddings from code and natural language text.
-- Working with **GitHub APIs** and automating repository cloning and processing.
-- Applying best practices for managing namespaces in Pinecone and preventing reprocessing.
-- Building robust error handling and debugging mechanisms for processing large repositories.
-- Knowledge of **open-source repository structures** and effective handling of diverse file formats.
+Modern teams frequently face these challenges:
 
-### Tools Used
-<div>
-  <img src="https://img.shields.io/badge/-Python-3776AB?&style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/-Streamlit-FF4B4B?&style=for-the-badge&logo=streamlit&logoColor=white" />
-  <img src="https://img.shields.io/badge/-Pinecone-2563eb?&style=for-the-badge&logo=pinecone&logoColor=white" />
-  <img src="https://img.shields.io/badge/-HuggingFace-FEA053?&style=for-the-badge&logo=huggingface&logoColor=white" />
-  <img src="https://img.shields.io/badge/-LangChain-10A8E0?&style=for-the-badge&logoColor=white" />
-  <img src="https://img.shields.io/badge/-OpenAI-412991?&style=for-the-badge&logo=openai&logoColor=white" />
-  <img src="https://img.shields.io/badge/-GitHub-181717?&style=for-the-badge&logo=github&logoColor=white" />
-</div>
+* PMs inheriting legacy systems with little documentation
+* Engineers onboarding into large repositories
+* Investors or technical stakeholders performing due diligence
+* Cross-functional teams needing shared understanding
 
-## Steps and Features
+RepoChat acts as a **codebase co-pilot**, translating repository structure into:
 
-### Key Features
-- **GitHub Repository Cloning:** The application clones public repositories to analyze the content locally.
-- **Embedding and Storage:** Code files are embedded using HuggingFace sentence transformers and stored in Pinecone for similarity searches.
-- **Query Processing:** Users can query the repository via a conversational interface. LangChain generates responses based on embeddings and context.
-- **Namespace Management:** Prevents duplicate processing by tracking repository namespaces in Pinecone.
-- **Support for Multiple File Types:** Handles Python, JavaScript, TypeScript, Java, and more, ensuring versatility.
+* System-level understanding
+* User journey mapping
+* Feature inventory
+* Risk analysis
+* Architectural traceability
 
-### Workflow
-1. **Clone Repository:** Input a GitHub repository link to clone the codebase locally.
-2. **Extract File Content:** Supported files are scanned, and their content is read.
-3. **Embed and Store:** HuggingFace embeddings are generated and stored in Pinecone.
-4. **Query Codebase:** Enter questions to retrieve relevant information about the codebase.
-5. **Chat Threads:** Manage multiple chat sessions for querying different repositories.
+It reduces the time-to-understanding from hours (or days) to minutes.
 
-### Screenshots
-  - Here is what you see when you first load the web app:
-<img width="1440" alt="Screenshot 2024-11-30 at 7 49 19 PM" src="https://github.com/user-attachments/assets/2e6bd372-2617-4437-bf75-6c2045c32cfe">
+# Target Users
 
-  - Here is an example of an ongoing chat with a github repo:
-<img width="1440" alt="Screenshot 2024-11-30 at 7 49 19 PM" src="https://github.com/user-attachments/assets/a911c511-ade5-4e3b-8165-ecf77ec5c56d">
+### Primary Users
+
+* Product Managers
+* Technical Program Managers
+* Startup Founders
+* Engineering Managers
+
+### Secondary Users
+
+* Software Engineers
+* Technical Recruiters
+* Investors conducting technical evaluation
+
+# Core Value Proposition
+
+RepoChat enables users to:
+
+* Understand what a system does without reading every file
+* Switch between PM mode and Engineer mode
+* Trace features to file-level evidence
+* Identify technical risks and unknowns
+* Generate structured executive summaries
+
+It bridges the gap between **code implementation** and **business understanding**.
+
+# Key Features
+
+## 1. Dual Perspective Modes
+
+### PM Mode
+
+Transforms technical details into product-level insight using a structured format:
+
+* What it is
+* User / business flows
+* Key components
+* Risks / unknowns
+* What to validate next
+
+### Engineer Mode
+
+Focuses on technical accuracy and file-level traceability:
+
+* Direct answer
+* Relevant file paths
+* Step-by-step logic
+* Edge cases
+* Related modules
 
 
+## 2. GitHub Repository Cloning
+
+* Clones public repositories locally
+* Supports optional branch selection
+* Prevents redundant re-processing
+
+## 3. Semantic Embedding + Vector Search
+
+* Supported files are embedded using HuggingFace sentence transformers
+* Stored in Pinecone under unique namespaces
+* Enables fast similarity search across large codebases
+
+## 4. Evidence-Backed Retrieval (RAG)
+
+* Retrieves top-matching files
+* Injects structured context into LLM prompt
+* Provides ranked sources with similarity scores
+* Displays confidence level (High / Medium / Low)
+
+This ensures answers are grounded in actual repository content.
+
+## 5. Insights Tab (Heuristic Repo Intelligence)
+
+Without heavy parsing, RepoChat surfaces:
+
+* File count
+* Top folders
+* Language distribution
+* Likely entry points
+* Dependency files
+* Largest files (hotspots)
+
+This acts as a lightweight architecture overview.
+
+## 6. Chat Thread Management
+
+* Multiple concurrent chat threads
+* Mode-aware prompt rewriting
+* Thread-based context retention
 
 
-## To Execute
+# Workflow
 
+### 1. Select or Paste a Repository
 
+Input a public GitHub repository URL.
 
-## Future Enhancements
-- **Authentication:** Add support for private GitHub repositories using user credentials.
-- **Enhanced Search:** Leverage advanced language models for better query understanding and responses.
-- **Visualization:** Include visualizations of repository structure and file relationships.
+### 2. Clone & Index
+
+* Files are scanned
+* Supported extensions are extracted
+* Content is embedded
+* Stored in Pinecone namespace
+
+### 3. Ask Structured Questions
+
+Choose PM or Engineer mode and ask:
+
+* “Map the user journey.”
+* “Where is authentication handled?”
+* “Identify tech debt risks.”
+
+### 4. Review Evidence
+
+Check:
+
+* Ranked source files
+* Confidence score
+* Related modules
+
+# Technical Architecture
+
+### Frontend
+
+* Streamlit (interactive web interface)
+
+### Backend Logic
+
+* Python
+* GitPython (repo cloning)
+* Sentence Transformers (embeddings)
+* Pinecone (vector storage)
+* Groq-compatible OpenAI client (LLM inference)
+
+### Retrieval-Augmented Generation (RAG)
+
+1. Query → embedding
+2. Pinecone similarity search
+3. Context injection
+4. LLM structured response
+5. Confidence scoring
+
+# Skills Demonstrated
+
+### Technical Skills
+
+* End-to-end RAG implementation
+* Vector database integration
+* Namespace management in Pinecone
+* Context window optimization
+* LLM prompt engineering
+* Streamlit app state management
+* Heuristic repository analysis
+
+### Product & PM Skills
+
+* Mode-based persona design (PM vs Engineer)
+* Structured response frameworks
+* Risk identification logic
+* Confidence communication (UX clarity)
+* Feature prioritization thinking
+* User segmentation
+* Information hierarchy design
+* Guided prompt workflows
+
+# Screenshots
+
+Here is what you see when you first load the web app:
+(Screenshot placeholder)
+
+Here is an example of an ongoing chat with a GitHub repo:
+(Screenshot placeholder)
+
+# Future Enhancements
+
+### Product Enhancements
+
+* Private repo authentication (OAuth integration)
+* Repo comparison mode (diff two systems)
+* Architecture diagram generation
+* Feature coverage mapping
+* Technical due diligence report export (PDF)
+
+### Technical Enhancements
+
+* Smarter chunking strategies
+* AST-based code parsing
+* Hybrid search (keyword + semantic)
+* Streaming source highlighting
+* Multi-repo memory graph
+
+# Why This Project Matters
+
+RepoChat demonstrates more than technical integration.
+
+It shows the ability to:
+
+* Translate complex systems into structured understanding
+* Design for multiple personas
+* Combine product thinking with AI architecture
+* Build tools that reduce cognitive load for technical teams
