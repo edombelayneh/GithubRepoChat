@@ -207,10 +207,18 @@ Check:
 # Screenshots
 
 Here is what you see when you first load the web app:
-(Screenshot placeholder)
+<img width="1436" height="774" alt="Screenshot 2026-02-24 at 7 21 13 PM" src="https://github.com/user-attachments/assets/bd5652ba-32e2-40e9-92b3-b98100d7a2e4" />
 
-Here is an example of an ongoing chat with a GitHub repo:
-(Screenshot placeholder)
+
+# Demo
+## PM Version
+
+https://github.com/user-attachments/assets/63d018b6-c02e-4eca-af6d-349e04c8b453
+
+## Engineer Version
+
+https://github.com/user-attachments/assets/812fc65c-9975-4384-9561-d405fcd61703
+
 
 # Future Enhancements
 
